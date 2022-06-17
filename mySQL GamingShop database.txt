@@ -1,0 +1,73 @@
+create database gamingshop;
+use gamingshop;
+
+create table customers(
+customerid int primary key auto_increment,
+customername varchar(45),
+email varchar(255) not null unique,
+tel int,
+gender varchar(1)
+);
+
+insert into customers(customername, email, tel, gender)
+values
+("Jose", "koo@gmail.com", 32456, "M"),
+("Mark", "realone@yahoo.com", 45456, "M");
+
+create table consoles(
+consoleid int primary key auto_increment,
+consolename varchar(45),
+gen int,
+releasedate date);
+
+insert into consoles(consolename,gen,releasedate) values
+("Playstation", 3, "2003-10-13"),
+("Playstation", 4, "2013-10-13"),
+("Xbox", 1, "2015-09-02");
+
+create table games(
+gameid int primary key auto_increment,
+gamename varchar(45),
+price int,
+consoletypeid int not null,
+foreign key(consoletypeid) references consoles(consoleid)
+);
+
+insert into games(gamename, price, consoletypeid) values
+("Uncharted 2", 30, 1),
+("The last of us 2", 60, 2),
+("Halo", 50, 3);
+
+
+create table orders(
+orderid int primary key auto_increment,
+customerid int not null,
+foreign key(customerid) references customers(customerid),
+consoleorderid int not null,
+gameorderid int not null,
+foreign key(consoleorderid) references consoles(consoleid),
+foreign key(gameorderid) references games(gameid),
+orderdate timestamp
+);
+
+insert into orders(customerid, consoleorderid, gameorderid, orderdate) values
+(1, 2, 1, "2021-06-22 05:14:07"),
+(2, 3, 3, "2022-05-26 03:16:07"),
+(2, 2, 2, "2019-01-21 01:13:07");
+
+create table stock(
+itemid int primary key auto_increment,
+consoleinstockid int not null,
+gameinstockid int not null,
+foreign key(consoleinstockid) references consoles(consoleid),
+foreign key(gameinstockid) references games(gameid),
+instockstatusgame boolean,
+instockstatusconsole boolean
+);
+
+insert into stock (consoleinstockid, gameinstockid, instockstatusgame, instockstatusconsole) values
+(1, 1, true, false),
+(2,2, true, true),
+(3,3, false,true);
+
+
